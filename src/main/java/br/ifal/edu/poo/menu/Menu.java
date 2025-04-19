@@ -1,7 +1,7 @@
 package br.ifal.edu.poo.menu;
 
-import br.ifal.edu.poo.menu.exceptions.IllegalMenuOptionException;
-import br.ifal.edu.poo.menu.exceptions.InvalidMenuOptionException;
+import br.ifal.edu.poo.exceptions.menu.MenuIllegalOptionException;
+import br.ifal.edu.poo.exceptions.menu.MenuInvalidOptionException;
 
 import java.util.Map;
 import java.util.Scanner;
@@ -16,9 +16,9 @@ public abstract class Menu {
     private String validateInput(Scanner scanner, String input) {
         try {
             if (!isInputValid(input)) {
-                throw new InvalidMenuOptionException();
+                throw new MenuInvalidOptionException();
             }
-        } catch (InvalidMenuOptionException exception) {
+        } catch (MenuInvalidOptionException exception) {
             System.out.println(exception.getMessage());
 
             return validateInput(scanner, scanner.nextLine());
@@ -46,7 +46,7 @@ public abstract class Menu {
             final MenuOption option = getOptions().get(input);
 
             if (option == null) {
-                throw new IllegalMenuOptionException();
+                throw new MenuIllegalOptionException();
             }
 
             try {
