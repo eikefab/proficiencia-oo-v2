@@ -14,9 +14,10 @@ public final class Server {
             System.out.println("[INFO] Servidor rodando na porta " + DEFAULT_SERVER_PORT);
 
             while (true) {
+                final Socket socket = serverSocket.accept();
+
                 new Thread(() -> {
                     try {
-                        final Socket socket = serverSocket.accept();
                         final ChatClient client = new ChatClient(socket);
 
                         System.out.println("[INFO] Conectado: " + socket.getInetAddress().getHostAddress() + ":" + socket.getPort());
