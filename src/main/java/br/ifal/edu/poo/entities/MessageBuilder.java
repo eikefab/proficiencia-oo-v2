@@ -13,7 +13,6 @@ public class MessageBuilder {
 
     private UUID sentTo;
     private UUID sentBy;
-    private UUID groupId;
     private String content;
 
     public MessageBuilder() {
@@ -45,12 +44,6 @@ public class MessageBuilder {
 
     private MessageBuilder sentBy(User author) {
         return sentBy(author.getUniqueId());
-    }
-
-    public MessageBuilder groupId(UUID id) {
-        this.groupId = id;
-
-        return this;
     }
 
     public MessageBuilder content(String content) {
@@ -85,7 +78,4 @@ public class MessageBuilder {
         return content;
     }
 
-    public UUID getGroupId() {
-        return groupId;
-    }
 }
