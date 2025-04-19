@@ -3,7 +3,8 @@ package br.ifal.edu.poo.socket.event;
 public enum ChatEvent {
 
     REGISTER("register_client_event"),
-    LOGIN("login_client_event");
+    LOGIN("login_client_event"),
+    LIST_ONLINE_USERS("online_users");
 
     private final String eventId;
 

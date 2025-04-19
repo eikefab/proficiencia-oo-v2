@@ -1,6 +1,7 @@
 package br.ifal.edu.poo.socket;
 
 import br.ifal.edu.poo.Server;
+import br.ifal.edu.poo.exceptions.server.ServerException;
 import br.ifal.edu.poo.socket.event.ChatEvent;
 import br.ifal.edu.poo.socket.event.ChatEventHandler;
 import br.ifal.edu.poo.socket.event.ChatEventListener;
@@ -61,12 +62,16 @@ public class ChatClient implements Runnable {
                     continue;
                 }
 
-                listener.listen(data.split(ChatEventHandler.EVENT_DATA_SEPARATOR)[1], writer);
+                try {
+                    listener.listen(this, data.split(ChatEventHandler.EVENT_DATA_SEPARATOR)[1], writer);
+                } catch (ServerException exception) {
+                    writer.println(exception.getExceptionId());
+                }
+
                 writer.flush();
             }
 
             System.out.println("[INFO] Desconectado: " + socket.getInetAddress().getHostAddress() + ":" + socket.getPort());
-
             Server.CONNECTED_CLIENTS.remove(this);
         } catch (Exception exception) {
             exception.printStackTrace();

@@ -4,17 +4,19 @@ import br.ifal.edu.poo.controllers.UserController;
 import br.ifal.edu.poo.controllers.impl.UserControllerImpl;
 import br.ifal.edu.poo.entities.User;
 import br.ifal.edu.poo.exceptions.server.ServerInvalidRequestException;
+import br.ifal.edu.poo.exceptions.user.UserEmailAlreadyExistsException;
+import br.ifal.edu.poo.exceptions.user.UserPasswordInvalidException;
 import br.ifal.edu.poo.socket.ChatClient;
 import br.ifal.edu.poo.socket.auth.AuthController;
 import br.ifal.edu.poo.socket.event.ChatEventListener;
 
 import java.io.PrintWriter;
 
-public class ChatClientLoginListener implements ChatEventListener {
+public class ChatClientRegisterListener implements ChatEventListener {
 
     private final UserController controller;
 
-    public ChatClientLoginListener() {
+    public ChatClientRegisterListener() {
         this.controller = UserControllerImpl.getInstance();
     }
 
@@ -30,13 +32,15 @@ public class ChatClientLoginListener implements ChatEventListener {
         final String password = items[1];
 
         try {
-            final User user = controller.login(email, password);
+            final User user = controller.register(email, password);
 
-            writer.println("success::login_" + user.getUniqueId());
+            writer.println("success::register_" + user.getUniqueId());
 
             AuthController.add(user, client);
-        } catch (Exception exception) {
-            writer.println("error::invalid_credentials");
+        } catch (UserEmailAlreadyExistsException exception) {
+            writer.println("error::email_registered");
+        } catch (UserPasswordInvalidException exception) {
+            writer.println("error:invalid_password");
         }
     }
 
