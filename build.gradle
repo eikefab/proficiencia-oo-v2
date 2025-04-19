@@ -23,7 +23,7 @@ test {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'br.ifal.edu.poo.Application'
+                'Main-Class': 'br.ifal.edu.poo.Server'
         )
     }
 

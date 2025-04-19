@@ -1,8 +1,9 @@
-package br.ifal.edu.poo.menu;
+package br.ifal.edu.poo;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -22,13 +23,21 @@ public class ClientApplication {
                     writer.println(a);
                     writer.flush();
 
-                    String input;
+                    String output = reader.readLine();
 
-                    while ((input = reader.readLine()) != null) {
-                        System.out.println(input);
+                    if (output == null) {
+                        break;
+                    }
+
+                    System.out.println(output);
+
+                    if (output.equalsIgnoreCase("disconnect")) {
+                        break;
                     }
                 }
             }
+        } catch (ConnectException exception) {
+            System.out.println("Não foi possível localizar o servidor.");
         } catch (Exception exception) {
             exception.printStackTrace();
         }
