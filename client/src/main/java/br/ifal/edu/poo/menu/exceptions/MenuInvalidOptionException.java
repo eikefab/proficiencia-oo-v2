@@ -1,4 +1,4 @@
-package br.ifal.edu.poo.exceptions.menu;
+package br.ifal.edu.poo.menu.exceptions;
 
 public class MenuInvalidOptionException extends RuntimeException {
 

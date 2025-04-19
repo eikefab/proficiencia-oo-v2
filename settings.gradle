@@ -1,2 +1,3 @@
 rootProject.name = 'proficiencia-oo-v2'
+include 'client'
 
