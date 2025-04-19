@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.Socket;
+import java.util.Base64;
 import java.util.Scanner;
 
 public class ClientApplication {
@@ -20,7 +21,7 @@ public class ClientApplication {
                     System.out.println("> ");
                     String a = scanner.nextLine();
 
-                    writer.println(a);
+                    writer.println(Base64.getEncoder().encodeToString(a.getBytes()));
                     writer.flush();
 
                     String output = reader.readLine();

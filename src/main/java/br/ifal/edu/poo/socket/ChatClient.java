@@ -1,5 +1,6 @@
 package br.ifal.edu.poo.socket;
 
+import br.ifal.edu.poo.Server;
 import br.ifal.edu.poo.socket.event.ChatEvent;
 import br.ifal.edu.poo.socket.event.ChatEventHandler;
 import br.ifal.edu.poo.socket.event.ChatEventListener;
@@ -8,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Base64;
 
 public class ChatClient implements Runnable {
 
@@ -32,13 +34,16 @@ public class ChatClient implements Runnable {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         ) {
             while ((input = reader.readLine()) != null) {
-                if (input.equalsIgnoreCase("disconnect")) {
+                final byte[] bytes = Base64.getDecoder().decode(input);
+                final String data = new String(bytes);
+
+                if (data.equalsIgnoreCase("disconnect")) {
                     socket.close();
 
                     break;
                 }
 
-                final ChatEvent event = ChatEvent.stripEvent(input);
+                final ChatEvent event = ChatEvent.stripEvent(data);
 
                 if (event == null) {
                     writer.println("Ação desconhecida.");
@@ -56,13 +61,13 @@ public class ChatClient implements Runnable {
                     continue;
                 }
 
-                final String base64 = input.split(ChatEventHandler.EVENT_DATA_SEPARATOR)[1];
-
-                listener.listen(base64, writer);
+                listener.listen(data.split(ChatEventHandler.EVENT_DATA_SEPARATOR)[1], writer);
                 writer.flush();
             }
 
             System.out.println("[INFO] Desconectado: " + socket.getInetAddress().getHostAddress() + ":" + socket.getPort());
+
+            Server.CONNECTED_CLIENTS.remove(this);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
